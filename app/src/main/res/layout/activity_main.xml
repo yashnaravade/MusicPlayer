@@ -58,4 +58,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/music" />
 
+    <Button
+        android:id="@+id/btnShowStat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Stat"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

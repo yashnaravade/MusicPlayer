@@ -3,6 +3,10 @@ package com.example.musicplayer
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Toast
@@ -18,13 +22,43 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         btnPlay = findViewById(R.id.btnPlay)
         val btnPrev: ImageView = findViewById(R.id.btnPrev)
         val btnNext: ImageView = findViewById(R.id.btnNext)
         seekBar = findViewById(R.id.seekBar)
 
+
         player = MediaPlayer.create(this, R.raw.songa)
         seekBar.max = player.duration / 1000
+
+        val btnShowStat: Button = findViewById(R.id.btnShowStat)
+
+        btnShowStat.setOnClickListener {
+
+
+        }
+
+
+        val mainHandler = Handler(Looper.getMainLooper())
+        mainHandler.post(object: Runnable{
+            override fun run() {
+
+
+
+                val total_duration=player.duration/1000
+                val remaining_duration = (player.duration - player.currentPosition) /1000
+                val passed_duration = total_duration - remaining_duration
+
+                seekBar.progress = passed_duration
+
+
+
+                mainHandler.postDelayed(this, 1000)
+            }
+
+        })
 
         btnPlay.setOnClickListener {
             if(player.isPlaying)
