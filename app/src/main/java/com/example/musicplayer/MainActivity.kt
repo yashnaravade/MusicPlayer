@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.Toast
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +14,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var  seekBar: SeekBar
     lateinit var  btnPlay: ImageView
     var currentSongNumber: Int =1
+
+    lateinit var tvTotalDuration: TextView
+    lateinit var tvPassedDuration: TextView
+    lateinit var tvRemainingDuration: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,35 +30,33 @@ class MainActivity : AppCompatActivity() {
         val btnNext: ImageView = findViewById(R.id.btnNext)
         seekBar = findViewById(R.id.seekBar)
 
+        tvTotalDuration = findViewById(R.id.tvTotalDuration)
+        tvPassedDuration = findViewById(R.id.tvPassedDuration)
+        tvRemainingDuration = findViewById(R.id.tvRemainingDuration)
+
 
         player = MediaPlayer.create(this, R.raw.songa)
         seekBar.max = player.duration / 1000
 
-        val btnShowStat: Button = findViewById(R.id.btnShowStat)
 
-        btnShowStat.setOnClickListener {
-
-
-        }
 
 
         val mainHandler = Handler(Looper.getMainLooper())
         mainHandler.post(object: Runnable{
             override fun run() {
 
+                val totalDuration=player.duration/1000
+                val remainingDuration = (player.duration - player.currentPosition)/1000
+                val passedDuration = totalDuration - remainingDuration
 
+                seekBar.progress = passedDuration
 
-                val total_duration=player.duration/1000
-                val remaining_duration = (player.duration - player.currentPosition) /1000
-                val passed_duration = total_duration - remaining_duration
-
-                seekBar.progress = passed_duration
-
-
+                tvTotalDuration.text = ""+(totalDuration/60)+":"+(totalDuration%60)
+                tvPassedDuration.text = ""+(passedDuration/60)+":"+(passedDuration%60)
+                tvRemainingDuration.text = ""+(remainingDuration/60)+":"+(remainingDuration%60)
 
                 mainHandler.postDelayed(this, 1000)
             }
-
         })
 
         btnPlay.setOnClickListener {
